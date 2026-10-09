@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>Rainbow Square</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <div
+      id="color-square"
+      class="color-square"
+      role="img"
+      aria-label="Color preview"
+    ></div>
+
+    <div class="controls">
+      <label for="color-slider" class="visually-hidden">
+        Choose a color
+      </label>
+
+      <input
+        type="range"
+        id="color-slider"
+        min="0"
+        max="359"
+        value="0"
+        step="1"
+        aria-label="Rainbow color slider"
+      />
+
+      <div class="color-info">
+        <span id="color-name">Red</span>
+        <button id="copy-button" type="button">
+          <span id="copy-label">Copy HEX</span>
+        </button>
+      </div>
+
+      <p id="hex-value" aria-live="polite">#FF0000</p>
+    </div>
+  </main>
+</body>
+</html>
