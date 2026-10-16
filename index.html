@@ -14,36 +14,72 @@
 </head>
 <body>
   <main class="app">
-    <div
-      id="color-square"
-      class="color-square"
-      role="img"
-      aria-label="Color preview"
-    ></div>
+    <div class="app-layout">
 
-    <div class="controls">
-      <label for="color-slider" class="visually-hidden">
-        Choose a color
-      </label>
+      <!-- Existing color picker -->
+      <section class="color-picker" aria-label="Color picker">
+        <div
+          id="color-square"
+          class="color-square"
+          role="img"
+          aria-label="Color preview"
+        ></div>
 
-      <input
-        type="range"
-        id="color-slider"
-        min="0"
-        max="359"
-        value="0"
-        step="1"
-        aria-label="Rainbow color slider"
-      />
+        <div class="controls">
+          <label for="color-slider" class="visually-hidden">
+            Choose a color
+          </label>
 
-      <div class="color-info">
-        <span id="color-name">Red</span>
-        <button id="copy-button" type="button">
-          <span id="copy-label">Copy HEX</span>
-        </button>
-      </div>
+          <input
+            type="range"
+            id="color-slider"
+            min="0"
+            max="359"
+            value="0"
+            step="1"
+            aria-label="Rainbow color slider"
+          />
 
-      <p id="hex-value" aria-live="polite">#FF0000</p>
+          <div class="color-info">
+            <span id="color-name">Red</span>
+            <button id="copy-button" type="button">
+              <span id="copy-label">Copy HEX</span>
+            </button>
+          </div>
+
+          <p id="hex-value" aria-live="polite">#FF0000</p>
+        </div>
+      </section>
+
+      <!-- New Pokémon viewer -->
+      <section class="pokemon-panel" aria-label="Pokémon viewer">
+        <h2>Pokémon</h2>
+
+        <div class="pokemon-image-container">
+          <img
+            id="pokemon-image"
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+            alt="Bulbasaur"
+            width="200"
+            height="200"
+          >
+        </div>
+
+        <h3 id="pokemon-name">Bulbasaur</h3>
+        <p id="pokemon-number">Pokémon #1</p>
+
+        <div class="pokemon-navigation">
+          <button id="pokemon-prev" type="button">
+            &#8592; Previous
+          </button>
+          <button id="pokemon-next" type="button">
+            Next &#8594;
+          </button>
+        </div>
+
+        <p id="pokemon-status" aria-live="polite"></p>
+      </section>
+
     </div>
   </main>
 
@@ -52,10 +88,7 @@
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("./sw.js")
           .catch((error) => {
-            console.error(
-              "Service worker registration failed:",
-              error
-            );
+            console.error("Service worker registration failed:", error);
           });
       });
     }
