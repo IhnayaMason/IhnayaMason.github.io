@@ -101,3 +101,94 @@ copyButton.addEventListener("click", async () => {
 
 // Set the initial color.
 updateColor();
+
+
+(() => {
+  const image = document.getElementById("pokemon-image");
+  const name = document.getElementById("pokemon-name");
+  const number = document.getElementById("pokemon-number");
+  const previousButton = document.getElementById("pokemon-prev");
+  const nextButton = document.getElementById("pokemon-next");
+  const status = document.getElementById("pokemon-status");
+
+  if (
+    !image || !name || !number ||
+    !previousButton || !nextButton || !status
+  ) {
+    return;
+  }
+
+  const MAX_POKEMON = 1025;
+  let currentPokemon = 1;
+  let requestNumber = 0;
+
+  async function showPokemon(id) {
+    currentPokemon = id;
+    const thisRequest = ++requestNumber;
+
+    previousButton.disabled = true;
+    nextButton.disabled = true;
+    status.textContent = "Loading Pokémon...";
+
+    try {
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${id}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Pokémon request failed");
+      }
+
+      const pokemon = await response.json();
+
+      // Ignore outdated responses if another request has started.
+      if (thisRequest !== requestNumber) return;
+
+      const sprite = pokemon.sprites.front_default;
+
+      if (!sprite) {
+        throw new Error("No image available for this Pokémon");
+      }
+
+      image.src = sprite;
+      image.alt = pokemon.name;
+      name.textContent = pokemon.name;
+      number.textContent = `Pokémon #${pokemon.id}`;
+      status.textContent = "";
+
+    } catch (error) {
+      if (thisRequest !== requestNumber) return;
+
+      status.textContent =
+        "Couldn't load Pokémon. Please try again.";
+      console.error(error);
+
+    } finally {
+      if (thisRequest === requestNumber) {
+        previousButton.disabled = false;
+        nextButton.disabled = false;
+      }
+    }
+  }
+
+  previousButton.addEventListener("click", () => {
+    const previousId =
+      currentPokemon <= 1
+        ? MAX_POKEMON
+        : currentPokemon - 1;
+
+    showPokemon(previousId);
+  });
+
+  nextButton.addEventListener("click", () => {
+    const nextId =
+      currentPokemon >= MAX_POKEMON
+        ? 1
+        : currentPokemon + 1;
+
+    showPokemon(nextId);
+  });
+
+  // Load the first Pokémon from the API.
+  showPokemon(1);
+})();
